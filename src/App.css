@@ -2,32 +2,92 @@
   text-align: center;
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
+.input-range {
+  width: 60% !important;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.input-range .input-range__slider {
+  width: 1.6rem;
+  height: 1.6rem;
+  margin-top: -1rem;
+  border: 1px solid #1abc9c;
+  background-color: #1abc9c;
 }
 
-.App-link {
-  color: #61dafb;
+.input-range .input-range__track--active {
+  background: #1abc9c;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input-range__label-container {
+  color: black;
+}
+
+.input-range .input-range__track {
+  height: 0.4rem;
+}
+
+input[type="radio"]:checked + label:before {
+  box-shadow: inset 0 -1px 3px #e4e4e4, inset 0 0 1px #222,
+    inset 0 0 0 3px #1abc9c;
+}
+
+/* .input-range__label-container {
+  left: -50%;
+  position: relative;
+  top: -20px;
+  color: #7f8c8d;
+  font-size: 14px;
+} */
+
+/* Костыль для стилизации кнопок type=radio */
+
+input[type="radio"]:checked,
+input[type="radio"]:not(:checked) {
+  position: absolute;
+  left: -9999px;
+}
+
+input[type="radio"]:checked + label,
+input[type="radio"]:not(:checked) + label {
+  display: inline-block;
+  position: relative;
+  padding-left: 28px;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked + label:before,
+input[type="radio"]:not(:checked) + label:before {
+  content: "";
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #1abc9c;
+  background-color: #ffffff;
+}
+
+input[type="radio"]:checked + label:before,
+input[type="radio"]:not(:checked) + label:before {
+  border-radius: 100%;
+}
+
+input[type="radio"]:checked + label:after,
+input[type="radio"]:not(:checked) + label:after {
+  content: "";
+  position: absolute;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+
+input[type="radio"]:checked + label:after,
+input[type="radio"]:not(:checked) + label:after {
+  left: 5px;
+  top: 5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
 }
