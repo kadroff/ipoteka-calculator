@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/static/css/main.f2e0a46d.chunk.css",
-    "main.js": "/static/js/main.d79292ba.chunk.js",
-    "main.js.map": "/static/js/main.d79292ba.chunk.js.map",
-    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
-    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
-    "static/css/2.6d7d54d2.chunk.css": "/static/css/2.6d7d54d2.chunk.css",
-    "static/js/2.a60fb175.chunk.js": "/static/js/2.a60fb175.chunk.js",
-    "static/js/2.a60fb175.chunk.js.map": "/static/js/2.a60fb175.chunk.js.map",
-    "index.html": "/index.html",
-    "precache-manifest.ee8de48ca407c65e18e392c35d1c60dc.js": "/precache-manifest.ee8de48ca407c65e18e392c35d1c60dc.js",
-    "service-worker.js": "/service-worker.js",
-    "static/css/2.6d7d54d2.chunk.css.map": "/static/css/2.6d7d54d2.chunk.css.map",
-    "static/css/main.f2e0a46d.chunk.css.map": "/static/css/main.f2e0a46d.chunk.css.map"
+    "main.css": "/ipoteka-calculator/static/css/main.f2e0a46d.chunk.css",
+    "main.js": "/ipoteka-calculator/static/js/main.a0c4c5dc.chunk.js",
+    "main.js.map": "/ipoteka-calculator/static/js/main.a0c4c5dc.chunk.js.map",
+    "runtime~main.js": "/ipoteka-calculator/static/js/runtime~main.2002e879.js",
+    "runtime~main.js.map": "/ipoteka-calculator/static/js/runtime~main.2002e879.js.map",
+    "static/css/2.6d7d54d2.chunk.css": "/ipoteka-calculator/static/css/2.6d7d54d2.chunk.css",
+    "static/js/2.244d34f2.chunk.js": "/ipoteka-calculator/static/js/2.244d34f2.chunk.js",
+    "static/js/2.244d34f2.chunk.js.map": "/ipoteka-calculator/static/js/2.244d34f2.chunk.js.map",
+    "index.html": "/ipoteka-calculator/index.html",
+    "precache-manifest.5d67415edcc92e5d098ddccc987b479d.js": "/ipoteka-calculator/precache-manifest.5d67415edcc92e5d098ddccc987b479d.js",
+    "service-worker.js": "/ipoteka-calculator/service-worker.js",
+    "static/css/2.6d7d54d2.chunk.css.map": "/ipoteka-calculator/static/css/2.6d7d54d2.chunk.css.map",
+    "static/css/main.f2e0a46d.chunk.css.map": "/ipoteka-calculator/static/css/main.f2e0a46d.chunk.css.map"
   }
 }
