@@ -15,8 +15,6 @@ import {
 
 function App() {
   const [values, setValues] = useState({
-    amount: 500000,
-    percent: 9,
     time: 60,
     year: false,
     month: true,
@@ -36,6 +34,8 @@ function App() {
   const [startTime, setStartTime] = useState(12);
   const [endTime, setEndTime] = useState(360);
   const [payment, setPayment] = useState(200000);
+  const [amount, setAmount] = useState(500000);
+  const [percent, setPercent] = useState(9);
 
   const round = (v, r) => {
     const res = Math.round(v / r) * r;
@@ -46,16 +46,16 @@ function App() {
     return res.toFixed(fix) * 1;
   };
 
-  const resultCalculate = name => {
+  const resultCalculate = () => {
     let loanAmount;
     if (values.immovables === true) {
-      loanAmount = values.amount - payment;
+      loanAmount = amount - payment;
     } else if (values.credit === true) {
-      loanAmount = values.amount;
+      loanAmount = amount;
     } else {
-      loanAmount = values.amount - payment;
+      loanAmount = amount - payment;
     }
-    const percentMonth = values.percent / 1200;
+    const percentMonth = percent / 1200;
     const paym = round(
       loanAmount *
         (percentMonth +
@@ -75,19 +75,19 @@ function App() {
 
   const rangeLimits = () => {
     // Расчет первоначального взноса при изменении стоимости недвижимости
-    if (values.amount > 20000000) {
-      const difference = Math.round(values.amount - 20000000);
+    if (amount > 20000000) {
+      const difference = Math.round(amount - 20000000);
       setStartPayment(difference);
       setPayment(difference);
-    } else if (values.amount < 20000000) {
+    } else if (amount < 20000000) {
       setStartPayment(0);
     }
 
-    if (values.amount < 1700000) {
-      const difference = Math.round(values.amount - 300000);
+    if (amount < 1700000) {
+      const difference = Math.round(amount - 300000);
       setEndPayment(difference);
     } else {
-      const difference = Math.round((values.amount * 80) / 100);
+      const difference = Math.round((amount * 80) / 100);
       setEndPayment(difference);
     }
     resultCalculate();
@@ -96,6 +96,13 @@ function App() {
     if (name === "payment") {
       setPayment(value);
     }
+    if (name === "amount") {
+      setAmount(value);
+    }
+    if (name === "percent") {
+      setPercent(value);
+    }
+
     setValues({ ...values, [name]: value });
   };
 
@@ -105,9 +112,14 @@ function App() {
     if (e.target.value !== "month" && e.target.value !== "year") {
       setValues({ ...values, [name]: value });
     }
+    resultCalculate();
 
     if (name === "payment") {
       setPayment(value);
+    }
+
+    if (name === "amount") {
+      setAmount(value);
     }
 
     if (e.target.value === "year") {
@@ -142,6 +154,7 @@ function App() {
             <SelectInput
               type="button"
               name="immovables"
+              className="active"
               onClick={e =>
                 setValues({
                   ...values,
@@ -192,12 +205,12 @@ function App() {
         <InputTitle>
           <PaymentTitle credit={values.credit} immovables={values.immovables} />
         </InputTitle>
-        <WrapperInput>
+        <WrapperInput style={{ marginTop: "-3px" }}>
           <InputRange
             maxValue={values.endAmount}
             minValue={values.startAmount}
             formatLabel={value => `${value.toLocaleString()}`}
-            value={values.amount}
+            value={amount}
             step={100000}
             name="amount"
             onChangeComplete={rangeLimits}
@@ -205,8 +218,8 @@ function App() {
           />
 
           <PaymentInput
-            value={values.amount.toLocaleString()}
-            type="text"
+            value={amount}
+            type="number"
             name="amount"
             onChange={e => handleInputChange(e)}
           />
@@ -216,7 +229,7 @@ function App() {
           <InputRange
             maxValue={endPayment}
             minValue={startPayment}
-            formatLabel={value => `${value.toLocaleString()}`}
+            formatLabel={value => `${value}`}
             value={payment}
             step={10000}
             onChangeComplete={resultCalculate}
@@ -224,8 +237,8 @@ function App() {
           />
           <PaymentInput
             name="payment"
-            value={payment.toLocaleString()}
-            type="text"
+            value={payment}
+            type="number"
             onChange={e => handleInputChange(e)}
           />
         </WrapperInput>
@@ -234,20 +247,22 @@ function App() {
           <InputRange
             maxValue={25}
             minValue={9}
-            value={values.percent}
+            step={0.1}
+            formatLabel={value => `${value.toFixed(1)}`}
+            value={percent}
             onChangeComplete={resultCalculate}
             onChange={value => handleRangeChange("percent", value)}
           />
           <PaymentInput
-            value={values.percent}
-            type="text"
+            value={percent.toFixed(1)}
+            type="number"
             name="percent"
-            style={{ width: "61px" }}
+            style={{ width: "61px", marginLeft: "12%" }}
             onChange={e => handleInputChange(e)}
           />
         </WrapperInput>
         <InputTitle>Срок кредита</InputTitle>
-        <WrapperInput>
+        <WrapperInput style={{ paddingLeft: "5.5%" }}>
           <InputRange
             maxValue={endTime}
             minValue={startTime}
@@ -258,9 +273,9 @@ function App() {
           />
           <PaymentInput
             value={values.time}
-            type="text"
+            type="number"
             name="time"
-            style={{ width: "61px", marginLeft: "0px" }}
+            style={{ width: "65px", marginLeft: "15%" }}
             onChange={e => handleInputChange(e)}
           />
           <WrapperSelect>
@@ -301,7 +316,7 @@ function App() {
           {values.repaymentAmount.toLocaleString()} руб.
         </ResultParagraph>
         <ResultTitle>Стоимость недвижимости</ResultTitle>
-        <ResultParagraph>{values.amount.toLocaleString()} руб.</ResultParagraph>
+        <ResultParagraph>{amount.toLocaleString()} руб.</ResultParagraph>
         <ResultTitle>Срок выплат</ResultTitle>
         <ResultParagraph>
           {values.year === true ? values.time : Math.ceil(values.time / 12)} лет
@@ -384,7 +399,7 @@ const ResultParagraph = styled.p`
   font-weight: bold;
   color: #666;
   padding-left: 20px;
-  margin-top: auto;
+  margin-top: -15px;
 `;
 
 const SelectTime = styled.input`
@@ -396,7 +411,8 @@ const SelectTime = styled.input`
 `;
 
 const WrapperSelect = styled.ul`
-  margin-top: -10px;
+  margin-top: -3px;
+  margin-left: -5%
   list-style-type: none;
 `;
 
@@ -415,7 +431,7 @@ const SelectInput = styled.input`
   padding: 10px;
   cursor: pointer;
 
-  &:focus {
+  &:hover {
     background-color: #1abc9c;
     color: white;
   }
