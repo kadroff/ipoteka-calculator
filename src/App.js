@@ -99,21 +99,57 @@ function App() {
 
   const rangeLimits = () => {
     // Расчет первоначального взноса при изменении стоимости недвижимости
-    if (amount > 20000000) {
-      const difference = Math.round(amount - 20000000);
-      setStartPayment(difference);
-      setPayment(difference);
-    } else if (amount < 20000000) {
-      setStartPayment(0);
-    }
+    if (values.immovables === true) {
+      if (amount > 20000000) {
+        const difference = Math.round(amount - 20000000);
+        setStartPayment(difference);
+        setPayment(difference);
+      } else if (amount < 20000000) {
+        setStartPayment(0);
+      }
 
-    if (amount < 1700000) {
-      const difference = Math.round(amount - 300000);
-      setEndPayment(difference);
-    } else {
-      const difference = Math.round((amount * 80) / 100);
-      setEndPayment(difference);
+      if (amount < 1700000) {
+        const difference = Math.round(amount - 300000);
+        setEndPayment(difference);
+      } else {
+        const difference = Math.round((amount * 80) / 100);
+        setEndPayment(difference);
+      }
+    } else if (values.credit === true) {
+      if (amount < 8800000) {
+        const rangeLimits = (amount * 83) / 100;
+        setEndPayment(rangeLimits);
+        setPayment(rangeLimits);
+      } else {
+        const difference = Math.ceil((amount - 8500000) / 500000);
+        const rangeLimits = (amount * (83 - difference)) / 100;
+        setEndPayment(rangeLimits);
+        setPayment(rangeLimits);
+      }
+    } else if (values.income === true) {
+      if (amount < 364000) {
+        const rangeLimits = (amount * 83) / 100;
+        setEndPayment(rangeLimits);
+        setPayment(rangeLimits);
+      } else {
+        const difference = Math.ceil((amount - 364000) / 20000);
+        const rangeLimits = (amount * (83 - difference)) / 100;
+        setEndPayment(rangeLimits);
+        setPayment(rangeLimits);
+      }
     }
+    // } else if (amount < 20000000) {
+    //   setStartPayment(0);
+    // }
+
+    // if (amount < 1700000) {
+    //   const difference = Math.round(amount - 300000);
+    //   setEndPayment(difference);
+    // } else {
+    //   const difference = Math.round((amount * 80) / 100);
+    //   setEndPayment(difference);
+    // }
+
     resultCalculate();
   };
   const handleRangeChange = (name, value) => {
