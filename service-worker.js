@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/ipoteka-calculator/precache-manifest.6302d13fa6654a19c2e6825fa18ac589.js"
+  "/ipoteka-calculator/precache-manifest.2773f017c9d6bdc81d1fd7032a227ffa.js"
 );
 
 self.addEventListener('message', (event) => {
