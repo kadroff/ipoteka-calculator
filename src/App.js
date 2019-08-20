@@ -23,12 +23,14 @@ function App() {
     income: false,
     startAmount: 500000,
     endAmount: 50000000,
-    loanAmount: 0,
-    resultPayment: 0,
-    repaymentAmount: 0,
-    earn: 0,
+    loanAmount: 500000,
+    resultPayment: 6228,
+    repaymentAmount: 373680,
+    earn: 12456,
     amountStep: 100000,
-    incomeAmount: 1000
+    incomeAmount: 500000,
+    paymentStep: 10000,
+    amount: 500000
   });
 
   const [endPayment, setEndPayment] = useState(200000);
@@ -36,7 +38,6 @@ function App() {
   const [startTime, setStartTime] = useState(12);
   const [endTime, setEndTime] = useState(360);
   const [payment, setPayment] = useState(200000);
-  const [amount, setAmount] = useState(500000);
   const [percent, setPercent] = useState(9);
 
   const round = (v, r) => {
@@ -57,11 +58,11 @@ function App() {
     let paym;
     let incomeAmount;
     if (values.immovables === true) {
-      loanAmount = amount - payment;
+      loanAmount = values.amount - payment;
     } else if (values.credit === true) {
-      loanAmount = amount;
+      loanAmount = values.amount;
     } else {
-      paym = amount / 2;
+      paym = values.amount / 2;
     }
     const percentMonth = percent / 1200;
     if (values.income !== true) {
@@ -74,7 +75,7 @@ function App() {
     } else {
       loanAmount = round(
         minmax(
-          amount /
+          values.amount /
             ((percentMonth +
               percentMonth / (Math.pow(1 + percentMonth, values.time) - 1)) *
               2),
@@ -83,8 +84,11 @@ function App() {
         ),
         1
       );
+    }
+    if (values.immovables !== true) {
       incomeAmount = loanAmount + payment;
     }
+
     const repaymentAmount = paym * values.time;
     const earn = round(paym * 2, 1);
     setValues({
@@ -100,47 +104,47 @@ function App() {
   const rangeLimits = () => {
     // Расчет первоначального взноса при изменении стоимости недвижимости
     if (values.immovables === true) {
-      if (amount > 20000000) {
-        const difference = Math.round(amount - 20000000);
+      if (values.amount > 20000000) {
+        const difference = Math.round(values.amount - 20000000);
         setStartPayment(difference);
         setPayment(difference);
-      } else if (amount < 20000000) {
+      } else if (values.amount < 20000000) {
         setStartPayment(0);
       }
 
-      if (amount < 1700000) {
-        const difference = Math.round(amount - 300000);
+      if (values.amount < 1700000) {
+        const difference = Math.round(values.amount - 300000);
         setEndPayment(difference);
       } else {
-        const difference = Math.round((amount * 80) / 100);
+        const difference = Math.round((values.amount * 80) / 100);
         setEndPayment(difference);
       }
       // Расчет первоначального взноса при изменении стоимости кредита
     } else if (values.credit === true) {
-      if (amount < 8800000) {
-        const rangeLimits = (amount * 83) / 100;
+      if (values.amount < 8800000) {
+        const rangeLimits = (values.amount * 83) / 100;
         setStartPayment(0);
         setEndPayment(rangeLimits);
-        setPayment(rangeLimits);
+        setPayment(0);
       } else {
         setStartPayment(0);
-        const difference = Math.ceil((amount - 8500000) / 500000);
-        const rangeLimits = (amount * (83 - difference)) / 100;
+        const difference = Math.ceil((values.amount - 8500000) / 500000);
+        const rangeLimits = (values.amount * (83 - difference)) / 100;
         setEndPayment(rangeLimits);
-        setPayment(rangeLimits);
+        setPayment(0);
       }
     } else if (values.income === true) {
-      if (amount < 364000) {
-        const rangeLimits = (amount * 83) / 100;
+      if (values.amount < 364000) {
+        const rangeLimits = (values.amount * 83) / 100;
         setStartPayment(0);
         setEndPayment(rangeLimits);
-        setPayment(rangeLimits);
+        setPayment(0);
       } else {
         setStartPayment(0);
-        const difference = Math.ceil((amount - 364000) / 20000);
-        const rangeLimits = (amount * (83 - difference)) / 100;
+        const difference = Math.ceil((values.amount - 364000) / 20000);
+        const rangeLimits = (values.amount * (83 - difference)) / 100;
         setEndPayment(rangeLimits);
-        setPayment(rangeLimits);
+        setPayment(0);
       }
     }
 
@@ -150,9 +154,9 @@ function App() {
     if (name === "payment") {
       setPayment(value);
     }
-    if (name === "amount") {
-      setAmount(value);
-    }
+    // if (name === "amount") {
+    //   setAmount(value);
+    // }
     if (name === "percent") {
       setPercent(value);
     }
@@ -172,9 +176,9 @@ function App() {
       setPayment(value);
     }
 
-    if (name === "amount") {
-      setAmount(value);
-    }
+    // if (name === "values.amount") {
+    //   setAmount(value);
+    // }
 
     if (e.target.value === "year") {
       const actualTime = Math.ceil(values.time / 12);
@@ -217,7 +221,9 @@ function App() {
                   income: false,
                   startAmount: IMMOVABLES_START_LIMITS,
                   endAmount: IMMOVABLES_END_LIMITS,
-                  amountStep: 100000
+                  amountStep: 100000,
+                  paymentStep: 10000,
+                  amount: IMMOVABLES_END_LIMITS
                 })
               }
               value="По стоимости недвижимости"
@@ -235,7 +241,9 @@ function App() {
                   income: false,
                   startAmount: CREDIT_START_LIMITS,
                   endAmount: CREDIT_END_LIMITS,
-                  amountStep: 100000
+                  amountStep: 100000,
+                  paymentStep: 10000,
+                  amount: CREDIT_END_LIMITS
                 })
               }
               value="По сумме кредита"
@@ -251,7 +259,9 @@ function App() {
                   income: true,
                   startAmount: INCOME_START_LIMITS,
                   endAmount: INCOME_END_LIMITS,
-                  amountStep: 1000
+                  amountStep: 1000,
+                  paymentStep: 1000,
+                  amount: INCOME_END_LIMITS
                 })
               }
               type="button"
@@ -267,7 +277,7 @@ function App() {
             maxValue={values.endAmount}
             minValue={values.startAmount}
             formatLabel={value => `${value.toLocaleString()}`}
-            value={amount}
+            value={values.amount}
             step={values.amountStep}
             name="amount"
             onChangeComplete={rangeLimits}
@@ -275,9 +285,9 @@ function App() {
           />
 
           <PaymentInput
-            value={amount}
+            value={values.amount}
             type="number"
-            name="amount"
+            name="number"
             onChange={e => handleInputChange(e)}
           />
         </WrapperInput>
@@ -286,9 +296,9 @@ function App() {
           <InputRange
             maxValue={endPayment}
             minValue={startPayment}
-            formatLabel={value => `${value}`}
+            formatLabel={value => `${value.toLocaleString()}`}
             value={payment}
-            step={10000}
+            step={values.paymentStep}
             onChangeComplete={resultCalculate}
             onChange={value => handleRangeChange("payment", value)}
           />
@@ -376,7 +386,7 @@ function App() {
         <ResultParagraph>
           {values.incomeAmount !== undefined
             ? values.incomeAmount.toLocaleString()
-            : amount.toLocaleString()}{" "}
+            : values.amount.toLocaleString()}{" "}
           руб.
         </ResultParagraph>
         <ResultTitle>Срок выплат</ResultTitle>
