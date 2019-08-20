@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "1468a79f345c518f779607835c2ee964",
+    "revision": "05fbf8f58cf3306fd68654d2f49a5e8d",
     "url": "/ipoteka-calculator/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ipoteka-calculator/static/css/2.6d7d54d2.chunk.css"
   },
   {
-    "revision": "7378583a5cf50e1f439b",
+    "revision": "891dc008ec57576b72fa",
     "url": "/ipoteka-calculator/static/css/main.a2329933.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/ipoteka-calculator/static/js/2.244d34f2.chunk.js"
   },
   {
-    "revision": "7378583a5cf50e1f439b",
-    "url": "/ipoteka-calculator/static/js/main.a87c2446.chunk.js"
+    "revision": "891dc008ec57576b72fa",
+    "url": "/ipoteka-calculator/static/js/main.03aa6ddd.chunk.js"
   },
   {
     "revision": "faba3ac04ec0ffe12a8a",
