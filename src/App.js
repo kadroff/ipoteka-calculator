@@ -26,7 +26,9 @@ function App() {
     loanAmount: 0,
     resultPayment: 0,
     repaymentAmount: 0,
-    earn: 0
+    earn: 0,
+    amountStep: 100000,
+    incomeAmount: 1000
   });
 
   const [endPayment, setEndPayment] = useState(200000);
@@ -46,22 +48,43 @@ function App() {
     return res.toFixed(fix) * 1;
   };
 
+  const minmax = (v, min, max) => {
+    return Math.min(Math.max(v, min), max);
+  };
+
   const resultCalculate = () => {
     let loanAmount;
+    let paym;
+    let incomeAmount;
     if (values.immovables === true) {
       loanAmount = amount - payment;
     } else if (values.credit === true) {
       loanAmount = amount;
     } else {
-      loanAmount = amount - payment;
+      paym = amount / 2;
     }
     const percentMonth = percent / 1200;
-    const paym = round(
-      loanAmount *
-        (percentMonth +
-          percentMonth / (Math.pow(1 + percentMonth, values.time) - 1)),
-      1
-    );
+    if (values.income !== true) {
+      paym = round(
+        loanAmount *
+          (percentMonth +
+            percentMonth / (Math.pow(1 + percentMonth, values.time) - 1)),
+        1
+      );
+    } else {
+      loanAmount = round(
+        minmax(
+          amount /
+            ((percentMonth +
+              percentMonth / (Math.pow(1 + percentMonth, values.time) - 1)) *
+              2),
+          300000,
+          20000000
+        ),
+        1
+      );
+      incomeAmount = loanAmount + payment;
+    }
     const repaymentAmount = paym * values.time;
     const earn = round(paym * 2, 1);
     setValues({
@@ -69,7 +92,8 @@ function App() {
       loanAmount: loanAmount,
       resultPayment: paym,
       repaymentAmount: repaymentAmount,
-      earn: earn
+      earn: earn,
+      incomeAmount: incomeAmount
     });
   };
 
@@ -162,7 +186,8 @@ function App() {
                   credit: false,
                   income: false,
                   startAmount: IMMOVABLES_START_LIMITS,
-                  endAmount: IMMOVABLES_END_LIMITS
+                  endAmount: IMMOVABLES_END_LIMITS,
+                  amountStep: 100000
                 })
               }
               value="По стоимости недвижимости"
@@ -179,7 +204,8 @@ function App() {
                   credit: true,
                   income: false,
                   startAmount: CREDIT_START_LIMITS,
-                  endAmount: CREDIT_END_LIMITS
+                  endAmount: CREDIT_END_LIMITS,
+                  amountStep: 100000
                 })
               }
               value="По сумме кредита"
@@ -194,7 +220,8 @@ function App() {
                   credit: false,
                   income: true,
                   startAmount: INCOME_START_LIMITS,
-                  endAmount: INCOME_END_LIMITS
+                  endAmount: INCOME_END_LIMITS,
+                  amountStep: 1000
                 })
               }
               type="button"
@@ -211,7 +238,7 @@ function App() {
             minValue={values.startAmount}
             formatLabel={value => `${value.toLocaleString()}`}
             value={amount}
-            step={100000}
+            step={values.amountStep}
             name="amount"
             onChangeComplete={rangeLimits}
             onChange={value => handleRangeChange("amount", value)}
@@ -316,7 +343,12 @@ function App() {
           {values.repaymentAmount.toLocaleString()} руб.
         </ResultParagraph>
         <ResultTitle>Стоимость недвижимости</ResultTitle>
-        <ResultParagraph>{amount.toLocaleString()} руб.</ResultParagraph>
+        <ResultParagraph>
+          {values.income === true
+            ? values.incomeAmount.toLocaleString()
+            : amount.toLocaleString()}{" "}
+          руб.
+        </ResultParagraph>
         <ResultTitle>Срок выплат</ResultTitle>
         <ResultParagraph>
           {values.year === true ? values.time : Math.ceil(values.time / 12)} лет
