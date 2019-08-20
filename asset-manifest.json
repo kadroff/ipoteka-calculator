@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/ipoteka-calculator/static/css/main.f2e0a46d.chunk.css",
-    "main.js": "/ipoteka-calculator/static/js/main.a0c4c5dc.chunk.js",
-    "main.js.map": "/ipoteka-calculator/static/js/main.a0c4c5dc.chunk.js.map",
+    "main.css": "/ipoteka-calculator/static/css/main.a2329933.chunk.css",
+    "main.js": "/ipoteka-calculator/static/js/main.a87c2446.chunk.js",
+    "main.js.map": "/ipoteka-calculator/static/js/main.a87c2446.chunk.js.map",
     "runtime~main.js": "/ipoteka-calculator/static/js/runtime~main.2002e879.js",
     "runtime~main.js.map": "/ipoteka-calculator/static/js/runtime~main.2002e879.js.map",
     "static/css/2.6d7d54d2.chunk.css": "/ipoteka-calculator/static/css/2.6d7d54d2.chunk.css",
     "static/js/2.244d34f2.chunk.js": "/ipoteka-calculator/static/js/2.244d34f2.chunk.js",
     "static/js/2.244d34f2.chunk.js.map": "/ipoteka-calculator/static/js/2.244d34f2.chunk.js.map",
     "index.html": "/ipoteka-calculator/index.html",
-    "precache-manifest.5d67415edcc92e5d098ddccc987b479d.js": "/ipoteka-calculator/precache-manifest.5d67415edcc92e5d098ddccc987b479d.js",
+    "precache-manifest.07123c1eb721819d49d1fb2b862ef9b6.js": "/ipoteka-calculator/precache-manifest.07123c1eb721819d49d1fb2b862ef9b6.js",
     "service-worker.js": "/ipoteka-calculator/service-worker.js",
     "static/css/2.6d7d54d2.chunk.css.map": "/ipoteka-calculator/static/css/2.6d7d54d2.chunk.css.map",
-    "static/css/main.f2e0a46d.chunk.css.map": "/ipoteka-calculator/static/css/main.f2e0a46d.chunk.css.map"
+    "static/css/main.a2329933.chunk.css.map": "/ipoteka-calculator/static/css/main.a2329933.chunk.css.map"
   }
 }
