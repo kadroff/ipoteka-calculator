@@ -18,6 +18,8 @@ function App() {
     time: 60,
     year: false,
     month: true,
+    rub: true,
+    percentRadio: false,
     immovables: true,
     credit: false,
     income: false,
@@ -58,7 +60,11 @@ function App() {
     let paym;
     let incomeAmount;
     if (values.immovables === true) {
-      loanAmount = values.amount - payment;
+      if (values.percentRadio === true) {
+        loanAmount = values.amount - (values.amount * payment) / 100;
+      } else {
+        loanAmount = values.amount - payment;
+      }
     } else if (values.credit === true) {
       loanAmount = values.amount;
     } else {
@@ -101,51 +107,71 @@ function App() {
     });
   };
 
+  const creditRangeLimits = () => {
+    const labelMax = round(
+      Math.min(values.amount / 0.2, 50000000 - values.amount),
+      10000
+    );
+    return labelMax;
+  };
+
+  const earnRangeLimits = () => {
+    const percentMonth = percent / 1200;
+    const maxAmount = round(
+      minmax(
+        values.amount /
+          ((percentMonth +
+            percentMonth / (Math.pow(1 + percentMonth, values.time) - 1)) *
+            2),
+        300000,
+        20000000
+      ),
+      1
+    );
+
+    const labelMax = round(
+      Math.min(maxAmount / 0.2, 50000000 - maxAmount),
+      10000
+    );
+    return labelMax;
+  };
+
   const rangeLimits = () => {
     // Расчет первоначального взноса при изменении стоимости недвижимости
-    if (values.immovables === true) {
-      if (values.amount > 20000000) {
-        const difference = Math.round(values.amount - 20000000);
-        setStartPayment(difference);
-        setPayment(difference);
-      } else if (values.amount < 20000000) {
-        setStartPayment(0);
-      }
+    if (values.percentRadio === false) {
+      if (values.immovables === true) {
+        if (values.amount > 20000000) {
+          const difference = Math.round(values.amount - 20000000);
+          setStartPayment(difference);
+          setPayment(difference);
+        } else if (values.amount < 20000000) {
+          setStartPayment(0);
+        }
 
-      if (values.amount < 1700000) {
-        const difference = Math.round(values.amount - 300000);
-        setEndPayment(difference);
-      } else {
-        const difference = Math.round((values.amount * 80) / 100);
-        setEndPayment(difference);
-      }
-      // Расчет первоначального взноса при изменении стоимости кредита
-    } else if (values.credit === true) {
-      if (values.amount < 8800000) {
-        const rangeLimits = (values.amount * 83) / 100;
+        if (values.amount < 1700000) {
+          const difference = Math.round(values.amount - 300000);
+          setEndPayment(difference);
+        } else {
+          const difference = Math.round((values.amount * 80) / 100);
+          setEndPayment(difference);
+        }
+        // Расчет первоначального взноса при изменении стоимости кредита
+      } else if (values.credit === true) {
         setStartPayment(0);
-        setEndPayment(rangeLimits);
+        setEndPayment(creditRangeLimits());
         setPayment(0);
       } else {
         setStartPayment(0);
-        const difference = Math.ceil((values.amount - 8500000) / 500000);
-        const rangeLimits = (values.amount * (83 - difference)) / 100;
-        setEndPayment(rangeLimits);
+        setEndPayment(earnRangeLimits());
         setPayment(0);
       }
-    } else if (values.income === true) {
-      if (values.amount < 364000) {
-        const rangeLimits = (values.amount * 83) / 100;
-        setStartPayment(0);
-        setEndPayment(rangeLimits);
-        setPayment(0);
-      } else {
-        setStartPayment(0);
-        const difference = Math.ceil((values.amount - 364000) / 20000);
-        const rangeLimits = (values.amount * (83 - difference)) / 100;
-        setEndPayment(rangeLimits);
-        setPayment(0);
-      }
+    }
+
+    if (values.amount > 20200000 && values.percentRadio === true) {
+      const difference = (
+        Math.round(values.amount - 20000000) / 500000
+      ).toFixed();
+      setStartPayment(Number(difference));
     }
 
     resultCalculate();
@@ -154,14 +180,15 @@ function App() {
     if (name === "payment") {
       setPayment(value);
     }
-    // if (name === "amount") {
-    //   setAmount(value);
-    // }
     if (name === "percent") {
       setPercent(value);
+      rangeLimits();
     }
 
+    // Расчет диапазона первоначального платежа при %
+
     setValues({ ...values, [name]: value });
+    creditRangeLimits();
   };
 
   const handleInputChange = e => {
@@ -175,10 +202,6 @@ function App() {
     if (name === "payment") {
       setPayment(value);
     }
-
-    // if (name === "values.amount") {
-    //   setAmount(value);
-    // }
 
     if (e.target.value === "year") {
       const actualTime = Math.ceil(values.time / 12);
@@ -202,6 +225,36 @@ function App() {
       });
       setStartTime(12);
       setEndTime(360);
+    }
+
+    // Радио кнопки первоначального взноса
+
+    if (e.target.value === "percentRadio" && values.immovables === true) {
+      setValues({
+        ...values,
+        percentRadio: true,
+        rub: false,
+        paymentStep: 1
+      });
+      setStartPayment(0);
+      setEndPayment(80);
+      setPayment(0);
+    }
+    if (e.target.value === "rub" && values.immovables === true) {
+      const newPayment = (values.amount * payment) / 100;
+      const newStartPayment = (values.amount * startPayment) / 100;
+      setValues({
+        ...values,
+        percentRadio: false,
+        rub: true
+      });
+      if (values.amount > 20000000) {
+        setStartPayment(newStartPayment);
+      } else {
+        setStartPayment(0);
+      }
+      setEndPayment(newPayment);
+      setPayment(newPayment);
     }
   };
   return (
@@ -308,6 +361,28 @@ function App() {
             type="number"
             onChange={e => handleInputChange(e)}
           />
+          <WrapperSelect>
+            <li>
+              <SelectTime
+                id="percent"
+                value="percentRadio"
+                checked={values.percentRadio}
+                onClick={e => handleInputChange(e)}
+                type="radio"
+              />
+              <label htmlFor="percent">%</label>
+            </li>
+            <li>
+              <SelectTime
+                id="rub"
+                value="rub"
+                checked={values.rub}
+                onClick={e => handleInputChange(e)}
+                type="radio"
+              />
+              <label htmlFor="rub">руб</label>
+            </li>
+          </WrapperSelect>
         </WrapperInput>
         <InputTitle>Процентная ставка</InputTitle>
         <WrapperInput>

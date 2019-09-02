@@ -1,0 +1,30 @@
+
+
+Sat Aug 31 16:56:15 2019
+Command line: TestDisk
+
+TestDisk 7.0, Data Recovery Utility, April 2015
+Christophe GRENIER <grenier@cgsecurity.org>
+http://www.cgsecurity.org
+OS: Linux, kernel 4.13.0-26-generic (#29~16.04.2-Ubuntu SMP Tue Jan 9 22:00:44 UTC 2018) x86_64
+Compiler: GCC 5.3
+ext2fs lib: 1.42.13, ntfs lib: libntfs-3g, reiserfs lib: none, ewf lib: none, curses lib: ncurses 6.0
+/dev/sda: LBA, HPA, LBA48, DCO support
+/dev/sda: size       250069680 sectors
+/dev/sda: user_max   250069680 sectors
+/dev/sda: native_max 250069680 sectors
+/dev/sda: dco        250069680 sectors
+Warning: can't get size for Disk /dev/mapper/control - 0 B - 0 sectors, sector size=512
+Hard disk list
+Disk /dev/sda - 128 GB / 119 GiB - CHS 15566 255 63, sector size=512 - SAMSUNG MZNTY128HDHP-00000, S/N:S2YMNB0H958288, FW:MAT2100Q
+
+Partition table type (auto): EFI GPT
+Disk /dev/sda - 128 GB / 119 GiB - SAMSUNG MZNTY128HDHP-00000
+Partition table type: Intel
+
+Interface Advanced
+Geometry from i386 MBR: head=255 sector=63
+BAD_RS LBA=1 0
+check_part_i386 1 type EE: no test
+ 1 P EFI GPT                  0   0  2 15566  29 63  250069679
+SIGHUP detected! TestDisk has been killed.
