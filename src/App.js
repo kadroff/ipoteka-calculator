@@ -241,7 +241,7 @@ function App() {
       setPayment(0);
     }
     if (e.target.value === "rub" && values.immovables === true) {
-      const newPayment = (values.amount * payment) / 100;
+      let newPayment = (values.amount * payment) / 100;
       const newStartPayment = (values.amount * startPayment) / 100;
       setValues({
         ...values,
@@ -252,6 +252,9 @@ function App() {
         setStartPayment(newStartPayment);
       } else {
         setStartPayment(0);
+      }
+      if (newStartPayment > newPayment) {
+        newPayment += 100000;
       }
       setEndPayment(newPayment);
       setPayment(newPayment);
@@ -367,7 +370,7 @@ function App() {
                 id="percent"
                 value="percentRadio"
                 checked={values.percentRadio}
-                onClick={e => handleInputChange(e)}
+                onChange={e => handleInputChange(e)}
                 type="radio"
               />
               <label htmlFor="percent">%</label>
@@ -377,7 +380,7 @@ function App() {
                 id="rub"
                 value="rub"
                 checked={values.rub}
-                onClick={e => handleInputChange(e)}
+                onChange={e => handleInputChange(e)}
                 type="radio"
               />
               <label htmlFor="rub">руб</label>
@@ -493,7 +496,7 @@ const Calculator = styled.div`
   flex-wrap: wrap;
   flex: 99;
   width: 70%;
-  height: 540px;
+  height: 570px;
   background: #f0f8fb;
   order: 1;
 `;
