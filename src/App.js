@@ -180,6 +180,12 @@ function App() {
       setEndPayment(difference);
     }
 
+    if (values.amount > 364000 && values.percentRadio && values.income) {
+      const difference =
+        82 - Number(Math.round(values.amount - 364000) / 21000).toFixed();
+      setEndPayment(difference);
+    }
+
     resultCalculate();
   };
   const handleRangeChange = (name, value) => {
@@ -283,6 +289,27 @@ function App() {
       });
       setEndPayment(creditRangeLimits());
       setPayment(creditRangeLimits());
+    }
+
+    if (e.target.value === "percentRadio" && values.income === true) {
+      setValues({
+        ...values,
+        percentRadio: true,
+        rub: false,
+        paymentStep: 1
+      });
+      setStartPayment(0);
+      setEndPayment(83);
+      setPayment(0);
+    }
+    if (e.target.value === "rub" && values.income === true) {
+      setValues({
+        ...values,
+        percentRadio: false,
+        rub: true
+      });
+      setEndPayment(earnRangeLimits());
+      setPayment(earnRangeLimits());
     }
   };
   return (
