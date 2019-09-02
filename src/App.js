@@ -167,11 +167,17 @@ function App() {
       }
     }
 
-    if (values.amount > 20200000 && values.percentRadio === true) {
+    if (values.amount > 20200000 && values.percentRadio && values.immovables) {
       const difference = (
         Math.round(values.amount - 20000000) / 500000
       ).toFixed();
       setStartPayment(Number(difference));
+    }
+
+    if (values.amount > 8800000 && values.percentRadio && values.credit) {
+      const difference =
+        82 - Number(Math.round(values.amount - 8800000) / 500000).toFixed();
+      setEndPayment(difference);
     }
 
     resultCalculate();
@@ -184,8 +190,6 @@ function App() {
       setPercent(value);
       rangeLimits();
     }
-
-    // Расчет диапазона первоначального платежа при %
 
     setValues({ ...values, [name]: value });
     creditRangeLimits();
@@ -258,6 +262,27 @@ function App() {
       }
       setEndPayment(newPayment);
       setPayment(newPayment);
+    }
+
+    if (e.target.value === "percentRadio" && values.credit === true) {
+      setValues({
+        ...values,
+        percentRadio: true,
+        rub: false,
+        paymentStep: 1
+      });
+      setStartPayment(0);
+      setEndPayment(83);
+      setPayment(0);
+    }
+    if (e.target.value === "rub" && values.credit === true) {
+      setValues({
+        ...values,
+        percentRadio: false,
+        rub: true
+      });
+      setEndPayment(creditRangeLimits());
+      setPayment(creditRangeLimits());
     }
   };
   return (
